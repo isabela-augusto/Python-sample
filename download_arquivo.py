@@ -19,5 +19,25 @@ def download(response, output):
     while True:
         data = response.read(BUFF_SIZE)
         total_downloaded += len(data)
-        if not data
+        if not data:
             break
+        output.write(data)
+        print('Downloaded {bytes}'.format(bytes=total_downloaded))
+
+def main ():
+    response = request.urlopen(sys.argv[1])
+    out_file = io.FileIO("saida.zip", mode="w")
+
+    content_lenght = response.getheader('Content-Length')
+    if content_lenght:
+        lenght = int(content_lenght)
+        download_length(response, out_file, lenght)
+    else:
+        download(response, out_file)
+
+    response.close()
+    out_file.close()
+    print("Finished")
+
+if __name__ == "__main__":
+    main ()
